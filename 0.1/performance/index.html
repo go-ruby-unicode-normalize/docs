@@ -421,6 +421,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#library-level-benchmark-go-api-vs-runtimes-2026-07-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Library-level benchmark (Go API vs runtimes) — 2026-07-03
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Library-level benchmark (Go API vs runtimes) — 2026-07-03">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfc-stringunicode_normalizenfc" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfc — String#unicode_normalize(:nfc)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfd-stringunicode_normalizenfd" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfd — String#unicode_normalize(:nfd)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfkc-stringunicode_normalizenfkc" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfkc — String#unicode_normalize(:nfkc)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfkd-stringunicode_normalizenfkd" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfkd — String#unicode_normalize(:nfkd)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -499,6 +550,57 @@
       Result (best of 5, ms)
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-level-benchmark-go-api-vs-runtimes-2026-07-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      Library-level benchmark (Go API vs runtimes) — 2026-07-03
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Library-level benchmark (Go API vs runtimes) — 2026-07-03">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfc-stringunicode_normalizenfc" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfc — String#unicode_normalize(:nfc)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfd-stringunicode_normalizenfd" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfd — String#unicode_normalize(:nfd)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfkc-stringunicode_normalizenfkc" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfkc — String#unicode_normalize(:nfkc)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unicode_normalize-nfkd-stringunicode_normalizenfkd" class="md-nav__link">
+    <span class="md-ellipsis">
+      unicode_normalize-nfkd — String#unicode_normalize(:nfkd)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -591,6 +693,259 @@ that complete in well under ~200 ms carry the most relative noise; treat
 their ratios as order-of-magnitude. These are <strong>real measured numbers</strong> from
 the 2026-06-30 run (Apple M-series; <code>ruby 4.0.5 +PRISM</code>, <code>jruby 10.1.0.0</code>,
 <code>truffleruby 34.0.1</code>) — nothing is fabricated or cherry-picked.</p>
+</div>
+<h2 id="library-level-benchmark-go-api-vs-runtimes-2026-07-03">Library-level benchmark (Go API vs runtimes) — 2026-07-03<a class="headerlink" href="#library-level-benchmark-go-api-vs-runtimes-2026-07-03" title="Permanent link">&para;</a></h2>
+<p>This section measures the <strong>pure-Go library directly, through its Go API</strong> — not
+the <code>rbgo</code> interpreter path recorded above. It isolates the library primitive
+(<code>normalize.Normalize</code>, which backs Ruby's <code>String#unicode_normalize</code>) from
+Ruby-interpreter dispatch, answering the parity question head-on: <em>is the pure-Go
+implementation as fast as the reference runtime's own <code>unicode_normalize</code>?</em> The
+<strong>same workload, same inputs, same iteration counts</strong> run through the Go library
+and through each reference runtime's stdlib; outputs were checked identical to MRI
+before any timing.</p>
+<ul>
+<li><strong>Host:</strong> Apple M4 Max (<code>Mac16,5</code>, arm64), macOS 26.5.1 — <strong>date 2026-07-03</strong>.</li>
+<li><strong>Runtimes:</strong> Go 1.26.4 · MRI <code>ruby 4.0.5 +PRISM</code> · MRI + YJIT · JRuby 10.1.0.0
+  (OpenJDK 25) · TruffleRuby 34.0.1 (GraalVM CE Native).</li>
+<li><strong>Workload:</strong> a ~1 KiB representative UTF-8 corpus normalized in each of the
+  four UAX #15 forms. The corpus mixes pre-composed and combining accented Latin,
+  canonical singletons (angstrom U+212B, ohm U+2126), a vulgar fraction (U+00BD),
+  a <code>fi</code> ligature (U+FB01), full-width forms (U+FF21..U+FF23), Hangul (pre-composed
+  U+AC00 and conjoining jamo), and two characters added in <strong>Unicode 16.0/17.0</strong>
+  (U+1CCD6, U+16121) that pre-<code>go1.27</code> <code>x/text</code> leaves un-decomposed but MRI folds
+  — the exact gap this library's patch tables close. So the timed work is real
+  normalization, not a no-op pass-through.</li>
+<li><strong>Method:</strong> each process runs 3 untimed warm-up passes, then 25 timed passes of
+  a fixed inner loop, timed with a monotonic clock; the <strong>best</strong> pass is reported
+  as <strong>ns/op</strong> (lower is better). <code>vs MRI</code> &lt; 1.00× means <em>faster than MRI</em>.
+  Interpreter start-up is outside the timed region, so these are operation costs,
+  not <code>ruby file.rb</code> process costs. Before timing, the harness verifies the Go
+  library and MRI emit <strong>byte-identical</strong> output for all four forms (SHA-256 per
+  form); the run aborts otherwise.</li>
+</ul>
+<p><strong>Verdict — go-ruby vs MRI + YJIT: the pure-Go library beats YJIT on all four
+forms.</strong> Ratios below are from the recorded run (values stable to ~2% across three
+back-to-back runs):</p>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th style="text-align: right;">go-ruby ns/op</th>
+<th style="text-align: right;">MRI + YJIT ns/op</th>
+<th style="text-align: right;">go ÷ YJIT</th>
+<th>Winner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:nfc</code></td>
+<td style="text-align: right;">28161.0</td>
+<td style="text-align: right;">44478.0</td>
+<td style="text-align: right;"><strong>0.63×</strong></td>
+<td>go-ruby (1.6× faster)</td>
+</tr>
+<tr>
+<td><code>:nfd</code></td>
+<td style="text-align: right;">17996.1</td>
+<td style="text-align: right;">45502.0</td>
+<td style="text-align: right;"><strong>0.40×</strong></td>
+<td>go-ruby (2.5× faster)</td>
+</tr>
+<tr>
+<td><code>:nfkc</code></td>
+<td style="text-align: right;">37365.9</td>
+<td style="text-align: right;">67205.0</td>
+<td style="text-align: right;"><strong>0.56×</strong></td>
+<td>go-ruby (1.8× faster)</td>
+</tr>
+<tr>
+<td><code>:nfkd</code></td>
+<td style="text-align: right;">26829.1</td>
+<td style="text-align: right;">69431.0</td>
+<td style="text-align: right;"><strong>0.39×</strong></td>
+<td>go-ruby (2.6× faster)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="unicode_normalize-nfc-stringunicode_normalizenfc">unicode_normalize-nfc — <code>String#unicode_normalize(:nfc)</code><a class="headerlink" href="#unicode_normalize-nfc-stringunicode_normalizenfc" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th style="text-align: right;">ns/op</th>
+<th style="text-align: right;">vs MRI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>go-ruby (pure Go)</strong></td>
+<td style="text-align: right;">28161.0</td>
+<td style="text-align: right;">0.64×</td>
+</tr>
+<tr>
+<td>MRI</td>
+<td style="text-align: right;">44061.0</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>MRI + YJIT</td>
+<td style="text-align: right;">44478.0</td>
+<td style="text-align: right;">1.01×</td>
+</tr>
+<tr>
+<td>JRuby</td>
+<td style="text-align: right;">45067.7</td>
+<td style="text-align: right;">1.02×</td>
+</tr>
+<tr>
+<td>TruffleRuby</td>
+<td style="text-align: right;">10636.2</td>
+<td style="text-align: right;">0.24×</td>
+</tr>
+</tbody>
+</table>
+<h4 id="unicode_normalize-nfd-stringunicode_normalizenfd">unicode_normalize-nfd — <code>String#unicode_normalize(:nfd)</code><a class="headerlink" href="#unicode_normalize-nfd-stringunicode_normalizenfd" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th style="text-align: right;">ns/op</th>
+<th style="text-align: right;">vs MRI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>go-ruby (pure Go)</strong></td>
+<td style="text-align: right;">17996.1</td>
+<td style="text-align: right;">0.40×</td>
+</tr>
+<tr>
+<td>MRI</td>
+<td style="text-align: right;">45273.0</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>MRI + YJIT</td>
+<td style="text-align: right;">45502.0</td>
+<td style="text-align: right;">1.01×</td>
+</tr>
+<tr>
+<td>JRuby</td>
+<td style="text-align: right;">41360.5</td>
+<td style="text-align: right;">0.91×</td>
+</tr>
+<tr>
+<td>TruffleRuby</td>
+<td style="text-align: right;">19679.7</td>
+<td style="text-align: right;">0.43×</td>
+</tr>
+</tbody>
+</table>
+<h4 id="unicode_normalize-nfkc-stringunicode_normalizenfkc">unicode_normalize-nfkc — <code>String#unicode_normalize(:nfkc)</code><a class="headerlink" href="#unicode_normalize-nfkc-stringunicode_normalizenfkc" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th style="text-align: right;">ns/op</th>
+<th style="text-align: right;">vs MRI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>go-ruby (pure Go)</strong></td>
+<td style="text-align: right;">37365.9</td>
+<td style="text-align: right;">0.56×</td>
+</tr>
+<tr>
+<td>MRI</td>
+<td style="text-align: right;">66802.0</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>MRI + YJIT</td>
+<td style="text-align: right;">67205.0</td>
+<td style="text-align: right;">1.01×</td>
+</tr>
+<tr>
+<td>JRuby</td>
+<td style="text-align: right;">61737.3</td>
+<td style="text-align: right;">0.92×</td>
+</tr>
+<tr>
+<td>TruffleRuby</td>
+<td style="text-align: right;">19704.6</td>
+<td style="text-align: right;">0.29×</td>
+</tr>
+</tbody>
+</table>
+<h4 id="unicode_normalize-nfkd-stringunicode_normalizenfkd">unicode_normalize-nfkd — <code>String#unicode_normalize(:nfkd)</code><a class="headerlink" href="#unicode_normalize-nfkd-stringunicode_normalizenfkd" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th style="text-align: right;">ns/op</th>
+<th style="text-align: right;">vs MRI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>go-ruby (pure Go)</strong></td>
+<td style="text-align: right;">26829.1</td>
+<td style="text-align: right;">0.39×</td>
+</tr>
+<tr>
+<td>MRI</td>
+<td style="text-align: right;">69555.0</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>MRI + YJIT</td>
+<td style="text-align: right;">69431.0</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>JRuby</td>
+<td style="text-align: right;">56795.6</td>
+<td style="text-align: right;">0.82×</td>
+</tr>
+<tr>
+<td>TruffleRuby</td>
+<td style="text-align: right;">22073.8</td>
+<td style="text-align: right;">0.32×</td>
+</tr>
+</tbody>
+</table>
+<p>The pure-Go library is <strong>1.6×–2.6× faster than both MRI and MRI + YJIT</strong> on every
+form — YJIT barely moves MRI's pure-Ruby <code>unicode_normalize</code> stdlib (≈1.00×), so
+the pure-Go path (delegating the hot work to <code>golang.org/x/text/unicode/norm</code>)
+wins comfortably. The decomposition-only forms (<code>:nfd</code>, <code>:nfkd</code>) are the widest
+wins (~2.5×), since they skip the recomposition pass. <strong>TruffleRuby is the fastest
+runtime on three of four forms</strong> (its Graal JIT reaches steady state within the
+warm-up budget); go-ruby edges it only on <code>:nfd</code> (17996 vs 19680 ns/op). JRuby
+tracks MRI (0.82×–1.02×). Every output is checked <strong>byte-identical to MRI</strong> — for
+all four forms, including the Unicode 16/17 characters x/text alone would miss —
+before any timing.</p>
+<div class="admonition note">
+<p class="admonition-title">Reproduce</p>
+<p>The harness is committed under
+<a href="https://github.com/go-ruby-unicode-normalize/docs/tree/main/benchmarks"><code>benchmarks/</code></a>:
+a self-contained Go driver (<code>go/</code>, pins the published library via <code>go.mod</code>
+pseudo-version), the equivalent <code>ruby/unicode_normalize.rb</code> workload, and
+<code>run.sh</code>. Run <code>bash benchmarks/run.sh</code>; env <code>OUTER</code>/<code>WARM</code> tune the pass
+budget and <code>RUBY</code>/<code>JRUBY</code>/<code>TRUFFLERUBY</code> select the runtime binaries. <code>run.sh</code>
+refuses to benchmark unless the Go and MRI outputs are byte-identical.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warm-up budget &amp; noise — honest framing</p>
+<p>Numbers reflect a <strong>fixed warm-process budget</strong> (3 warm-up + 25 timed passes
+in one process). The JVM/GraalVM JITs (JRuby, TruffleRuby) may need a larger
+warm-up to reach peak throughput, so their columns can <strong>understate</strong> it; here
+TruffleRuby is already the fastest on most forms, so its lead is a floor, not
+a ceiling. Every number here is a <strong>real measured value</strong> from the dated run
+above (values stable to ~2% across three back-to-back runs) — nothing is
+fabricated, estimated, or cherry-picked. The go-ruby column is the pure-Go
+library; every other column is that interpreter's own <code>unicode_normalize</code>
+stdlib doing the equivalent work.</p>
 </div>
 
 

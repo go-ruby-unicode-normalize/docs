@@ -4,6 +4,8 @@ github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260820054851-722
 github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260820054851-72289ac27785/go.mod h1:QCEvsoKiiAPdJNxsW1HEgVyTQ4NHHeXtcf8pGgW4z3U=
 github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260822084736-2628d3bfd423 h1:vDeMHOvdWu37AZl0GXYj6t1Qp0YkopMwKBZ90XTg8CY=
 github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260822084736-2628d3bfd423/go.mod h1:QCEvsoKiiAPdJNxsW1HEgVyTQ4NHHeXtcf8pGgW4z3U=
+github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260824160327-bc72224e43ad h1:rafgDDUTP2dnRdfVnda3fTWwJXBnPBhcpHZ71uyT5WU=
+github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260824160327-bc72224e43ad/go.mod h1:QCEvsoKiiAPdJNxsW1HEgVyTQ4NHHeXtcf8pGgW4z3U=
 golang.org/x/text v0.38.0 h1:sXmwo9DwP3OK9EZ7PqAdaooSGozfl/3a6/xJcbzPRhE=
 golang.org/x/text v0.38.0/go.mod h1:YXZt3QhHUKYT53r2lLKFIVi6Ao1jdzrTR/KQ09qyxF4=
 golang.org/x/text v0.41.0 h1:vz/seA0lnX87Othu2f/0L24RcgrXD9/YFTSuGjj3rH8=

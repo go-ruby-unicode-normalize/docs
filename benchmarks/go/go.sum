@@ -8,6 +8,8 @@ github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260824160327-bc7
 github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260824160327-bc72224e43ad/go.mod h1:QCEvsoKiiAPdJNxsW1HEgVyTQ4NHHeXtcf8pGgW4z3U=
 github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260916103816-ff4e6b030f1f h1:Qqoz8+3zR1Rv8fLpY9xvLZIsOewozC3BDtf1c3erj7o=
 github.com/go-ruby-unicode-normalize/unicode-normalize v0.0.0-20260916103816-ff4e6b030f1f/go.mod h1:h46HEDiNUPt0u4Ru5djqcljbtV0x0BWgKss+HVGaun4=
+github.com/go-ruby-unicode-normalize/unicode-normalize v0.1.0 h1:pCUTKTHNxPbMoiaV37OH024SkcPbaRqm63N0abs2baw=
+github.com/go-ruby-unicode-normalize/unicode-normalize v0.1.0/go.mod h1:5fES3C2fgSVwcBvEdihRoObvuMhhBuyP1EWvZc/2IkY=
 golang.org/x/text v0.38.0 h1:sXmwo9DwP3OK9EZ7PqAdaooSGozfl/3a6/xJcbzPRhE=
 golang.org/x/text v0.38.0/go.mod h1:YXZt3QhHUKYT53r2lLKFIVi6Ao1jdzrTR/KQ09qyxF4=
 golang.org/x/text v0.41.0 h1:vz/seA0lnX87Othu2f/0L24RcgrXD9/YFTSuGjj3rH8=
